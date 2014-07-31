@@ -3,6 +3,10 @@ package org.usb4java.javax.examples;
 import org.usb4java.Device;
 
 import javax.usb.*;
+import javax.usb.event.UsbDeviceDataEvent;
+import javax.usb.event.UsbDeviceErrorEvent;
+import javax.usb.event.UsbDeviceEvent;
+import javax.usb.event.UsbDeviceListener;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -16,6 +20,26 @@ public class MyAttempt {
     public static void main(String[] args) throws UsbException {
         try {
             List<UsbDevice> devices = getDevices();
+            for (UsbDevice dev : devices) {
+                System.out.println(dev.getUsbDeviceDescriptor().idVendor());
+                System.out.println(dev.getUsbDeviceDescriptor().idProduct());
+                dev.addUsbDeviceListener(new UsbDeviceListener() {
+                    @Override
+                    public void usbDeviceDetached(UsbDeviceEvent usbDeviceEvent) {
+                        System.out.println("some happened");
+                    }
+
+                    @Override
+                    public void errorEventOccurred(UsbDeviceErrorEvent usbDeviceErrorEvent) {
+                        System.out.println("some happened");
+                    }
+
+                    @Override
+                    public void dataEventOccurred(UsbDeviceDataEvent usbDeviceDataEvent) {
+                        System.out.println("some happened");
+                    }
+                });
+            }
             System.out.println(devices);
             System.out.println(devices.size());
         } catch (UnsupportedEncodingException e) {

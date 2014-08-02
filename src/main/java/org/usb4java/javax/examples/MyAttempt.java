@@ -23,22 +23,11 @@ public class MyAttempt {
             for (UsbDevice dev : devices) {
                 System.out.println(dev.getUsbDeviceDescriptor().idVendor());
                 System.out.println(dev.getUsbDeviceDescriptor().idProduct());
-                dev.addUsbDeviceListener(new UsbDeviceListener() {
-                    @Override
-                    public void usbDeviceDetached(UsbDeviceEvent usbDeviceEvent) {
-                        System.out.println("some happened");
-                    }
 
-                    @Override
-                    public void errorEventOccurred(UsbDeviceErrorEvent usbDeviceErrorEvent) {
-                        System.out.println("some happened");
-                    }
+                ThreadListener listener1 = new ThreadListener(dev);
+                new Thread(listener1).start();
+                //break;
 
-                    @Override
-                    public void dataEventOccurred(UsbDeviceDataEvent usbDeviceDataEvent) {
-                        System.out.println("some happened");
-                    }
-                });
             }
             System.out.println(devices);
             System.out.println(devices.size());
